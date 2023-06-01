@@ -1,6 +1,6 @@
 # Installation
 ´´´
-conda create -n eye_tracking_features python==3.10
+conda create -n eye_tracking_features python==3.10 --file requirements.txt
 conda activate eye_tracking_features
 ´´´
 
