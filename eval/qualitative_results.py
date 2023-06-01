@@ -1,22 +1,24 @@
 import cv2
 import pandas as pd
-import numpy as np
-from matplotlib import pyplot as plt
-from tqdm import tqdm
 from copy import copy
-import sys
 
 
 df_our = pd.read_csv("data/our_regressions.tsv", sep="\t")
 df_cole2011 = pd.read_csv("data/cole2011_regressions.tsv", sep="\t")
 df_word_level = pd.read_csv("data/words_map.tsv", sep="\t")
 
-df_our = df_our[(df_our["uid"] == 1) & (df_our["url"].str.contains("weltderphysik"))]
-df_cole2011 = df_cole2011[(df_cole2011["uid"] == 1) & (df_cole2011["url"].str.contains("weltderphysik"))]
-df_word_level = df_word_level[(df_word_level["uid"] == 1) & (df_word_level["url"].str.contains("weltderphysik"))]
+df_our = df_our[(df_our["uid"] == 48) & (df_our["url"].str.contains("weltderphysik"))]
+df_cole2011 = df_cole2011[(df_cole2011["uid"] == 48) & (df_cole2011["url"].str.contains("weltderphysik"))]
+df_word_level = df_word_level[(df_word_level["uid"] == 48) & (df_word_level["url"].str.contains("weltderphysik"))]
 
+offset = -107
 
-image = cv2.imread("data/weltderphysik.png")
+df_our["x"] += offset
+df_our["mean_x"] += offset
+df_cole2011["mean_x"] += offset
+df_word_level["x"] += offset
+
+image = cv2.imread("img/weltderphysik.png")
 
 # draw bounding boxes for words
 for idx, row in df_word_level.iterrows():
@@ -28,7 +30,7 @@ for idx, row in df_word_level.iterrows():
     except:
         ...
 
-cv2.imwrite("out/blank_qualitative_example.png", image)
+cv2.imwrite("results/qualitative_example_blank.png", image)
 
 
 # paint our reading sequences and regressions
@@ -85,7 +87,7 @@ while i < df_our.shape[0]:
 
 Img = cv2.addWeighted(Img, 0.7, image, 0.3, 0)
 Img = Img[:,:,::-1]
-cv2.imwrite("out/our_qualitative_example.png", Img)
+cv2.imwrite("results/qualitative_example_our.png", Img)
 
 
 
@@ -137,7 +139,6 @@ while i < df_cole2011.shape[0]:
             else:
                 raise Exception
             Img = cv2.line(Img, point, nxt_point, line_color, line_thickness)
-            print("painted")
     except:
         ...
     i = k
@@ -145,5 +146,5 @@ while i < df_cole2011.shape[0]:
 # image = cv2.line(Img, start_point, end_point, color, thickness)
 Img = cv2.addWeighted(Img, 0.7, image, 0.3, 0)
 Img = Img[:,:,::-1]
-cv2.imwrite("out/cole2011_qualitative_example.png", Img)
+cv2.imwrite("results/qualitative_example_cole2011.png", Img)
 
