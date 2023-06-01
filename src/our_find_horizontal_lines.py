@@ -60,7 +60,7 @@ class ParallelRunner:
         min_dists = df[df.distance <= (ERROR_REGION)].sort_values(by="distance")#.iloc[:9]
         return min_dists
 
-    def viterbi(self, words_list, mean_word_length):
+    def viterbi(self, words_list):
         try:
             from viterbi_trellis import ViterbiTrellis
             # indeces = [list(zip(list(t.distance.values), list(t.index.values))) for t in words_list]
@@ -78,7 +78,10 @@ class ParallelRunner:
         df = self.gaze_data.copy(deep=True)
         new_df = []
         indexe = df.index.values
-
+        if self.uid != 71:
+            return False
+        else:
+            print(71)
         i = 0
         with tqdm(total=df.shape[0]-1) as progress:
             all_sequences = []
